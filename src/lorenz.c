@@ -11,8 +11,11 @@ typedef struct {
 void ask_parametres_lorentz (){
     float sigma;
     float beta;
+    float rho;
     printf("Choisir parametre sigma : ");
     scanf("%f", &sigma);
+    printf("Choisir parametre rho : ");
+    scanf("%f", &rho);
     printf("Choisir parametre beta : ");
     scanf("%f", &beta);
 }
@@ -28,3 +31,24 @@ void ask_coordonnees(){
     printf("Choisir coordonnee z : ");
     scanf("%f", &z);
 }
+
+void init_ltz(double* x, double* y, double* z) {
+    *x = 1.0
+    *y = 2.0
+    *z = 3.0
+}
+
+void actualiaser_ltz(double* x, double* y, double* z, double dt) {
+    double sigma = 10.0;
+    double rho = 28.0;
+    double beta = 8.0 / 3.0;
+
+    double dx = sigma * (*y - *x);
+    double dy = *x * (rho - *z) - *y;
+    double dz = *x * *y - beta * *z;
+
+    *x += dx * dt;
+    *y += dy * dt;
+    *z += dz * dt;
+}
+
