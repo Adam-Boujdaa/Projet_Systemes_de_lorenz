@@ -2,6 +2,12 @@
  #include <stdlib.h>
  #include "lorenz.h"
 
+typedef struct {
+    void (*pt_init)(double*,double*,double*); // Pointe vers la fonction init des coordonnées (x,y,z)
+    void (*pt_actualiaser)(double*, double*, double*, double); // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
+    double param[3]; // Tableau fixé au système dynamique (Lorenz : σ, ρ, β)
+} SysDynamique;
+
 void ask_parametres_lorentz (){
     float sigma;
     float beta;
