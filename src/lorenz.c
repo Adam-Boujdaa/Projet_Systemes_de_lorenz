@@ -33,13 +33,13 @@ SimSettings* ask_simulation_settings() {
     return sim;
 }
 
-/*
+
 void init_ltz(Coord *point) {
-    point->x = x;
-    point->y = y;
-    point->z = z;
+    point->x = 0.0;
+    point->y = 0.0;
+    point->z = 0.0;
 }
-*/
+
 
 void actualiser_ltz(Coord *point, Params *para, double dt) {
     double dx = para->sigma * (point->y - point->x);
@@ -51,17 +51,16 @@ void actualiser_ltz(Coord *point, Params *para, double dt) {
     point->z += dz * dt;
 }
 
-/*
+
 void creation_ltz(SysDynamique *systeme) {
-    systeme->pt_initial = init_ltz;
+    systeme->pt_init = init_ltz;
     systeme->pt_actualiser = actualiser_ltz;
 
     Params *param = ask_parametres_lorentz();
     
-    systeme->param.sigma = params->sigma;
-    systeme->param.rho = params->rho;
-    systeme->param.beta = params->beta;
-    systeme->param.dt = params->dt;
+    systeme->param->sigma = param->sigma;
+    systeme->param->rho = param->rho;
+    systeme->param->beta = param->beta;
 }
 
 void choisir_sys(SysDynamique *systeme) {
@@ -78,7 +77,7 @@ void choisir_sys(SysDynamique *systeme) {
         creation_ltz(systeme);
     }
 }
-*/
+
 
 void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double), Coord *pt, Params *params, SimSettings *sim) {
     FILE *f = fopen(nom_fichier, "w");

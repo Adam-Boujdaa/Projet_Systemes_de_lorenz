@@ -4,7 +4,7 @@
 
 
 int main (){
-    //SysDynamique systeme;
+    SysDynamique systeme;
     Coord *point;
     Params *params;
     SimSettings *sim;
@@ -14,10 +14,10 @@ int main (){
     params = ask_parametres_lorentz();
     sim = ask_simulation_settings();
     
-    // Créer le système dynamique de Lorenz
-    //creation_ltz(&systeme);
 
-    //systeme.pt_init(Coord* point);
+    creation_ltz(&systeme);
+
+    systeme.pt_init(point);
 
     generer_fichier("lorenz.dat", actualiser_ltz, point, params, sim);
 

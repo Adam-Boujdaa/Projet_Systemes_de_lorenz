@@ -25,7 +25,7 @@ typedef struct SimSettings SimSettings;
 
 struct SysDynamique {
     void (*pt_init)(Coord *point); // Pointe vers la fonction init des coordonnées (x,y,z)
-    void (*pt_actualiser)(Coord * point, Params *para); // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
+    void (*pt_actualiser)(Coord * point, Params *para, double dt); // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
     Params *param; // Tableau fixé au système dynamique (Lorenz : σ, ρ, β) + dt
 };
 
