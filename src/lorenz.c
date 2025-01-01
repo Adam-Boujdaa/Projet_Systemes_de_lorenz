@@ -2,21 +2,21 @@
  #include <stdlib.h>
  #include "lorenz.h"
 
-struct lorenz_settings* ask_parametres_lorentz (){
-    struct lorenz_settings *params = malloc (sizeof(struct lorenz_settings));
+Params *ask_parametres_lorentz (){
+    Params *params = malloc (sizeof(struct lorenz_settings));
     printf("Choisir parametre sigma : \n");
     scanf("%lf", &(params->sigma));
     printf("Choisir parametre rho : \n");
     scanf("%lf", &(params->rho));
     printf("Choisir parametre beta : \n");
     scanf("%lf", &(params->beta));
-    printf("Choisir parametre dt : ");
+    printf("Choisir parametre dt : \n");
     scanf("%lf", &(params>dt));
     return params;
 }
 
-struct coord* ask_position_initiale(){       // Permet de demander la position initiale
-    struct coord * position = malloc(sizeof(struct coord));
+Coord *ask_position_initiale(){       // Permet de demander la position initiale
+    Coord* position = malloc(sizeof(struct coord));
     printf("Choisir coordonnee x : \n");
     scanf("%lf", &(position->x));
     printf("Choisir coordonnee y : \n");
@@ -26,13 +26,13 @@ struct coord* ask_position_initiale(){       // Permet de demander la position i
     return position;
 }
 
-void init_ltz(coord *point) {
+void init_ltz(Coord *point) {
     point->x = x;
     point->y = y;
     point->z = z;
 }
 
-void actualiser_ltz(coord * point, lorenz_settings *para) {
+void actualiser_ltz(Coord *point, Params *para) {
     double dx = para->sigma * (point->y - point->x);
     double dy = point->x * (para->rho - point->z) - point->y;
     double dz = point->x * point->y - para->beta * point->z;
@@ -50,10 +50,10 @@ void creation_ltz(SysDynamique *systeme) {
     systeme->param.sigma = params->sigma;
     systeme->param.rho = params->rho;
     systeme->param.beta = params->beta;
-    systeme->param.dt = params->dt
+    systeme->param.dt = params->dt;
 }
 
-void choisir_sys(SysDynamique* systeme) {
+void choisir_sys(SysDynamique *systeme) {
     printf("Liste du choix du système dynamique :\n");
     printf("1 : Système de Lorentz.\n");
     printf("Votre choix :\n");

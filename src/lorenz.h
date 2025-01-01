@@ -2,25 +2,28 @@ struct SysDynamique {
     void (*pt_init)(coord *point); // Pointe vers la fonction init des coordonnées (x,y,z)
     void (*pt_actualiser)(coord * point, lorenz_settings *para); // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
     struct lorenz_settings* param; // Tableau fixé au système dynamique (Lorenz : σ, ρ, β) + dt
-}
+};
 
-struct lorenz_settings {
+struct LorenzSettings {
     float sigma;
     float beta;
     float rho;
     float dt;
-}
+};
 
-struct coord {
+struct Coord {
     float x;
     float y;
     float z;
-}
+};
 
-struct lorenz_settings* ask_parametres_lorentz;
-struct coord* ask_position_initiale;
-void init_ltz(coord *point);
-void actualiser_ltz(coord * point, lorenz_settings *para);
+typedef struct Coord Coord;
+typedef struct LorenzSettings Params;
+
+Params* ask_parametres_lorentz;
+Coord* ask_position_initiale;
+void init_ltz(Coord *point);
+void actualiser_ltz(Coord * point, Params *para);
 void creation_ltz(SysDynamique *systeme);
 void choisir_sys(SysDynamique* systeme);
 

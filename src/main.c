@@ -4,18 +4,18 @@
 int main (){
 
     SysDynamique systeme;
-    struct coord* point;
-    struct lorenz_settings* params;
+    Coord *point;
+    Params *params;
 
-    struct coord* point = ask_position_initiale();
-    params = ask_parametres_lorentz ();
+    point = ask_position_initiale();
+    params = ask_parametres_lorentz();
 
     creation_ltz(&systeme);
 
-    systeme.pt_initial(coord* point);
+    systeme.pt_initial(Coord* point);
 
     for (int i = 0; i < 50; i++) {
-        systeme_actualiser_ltz(position, params);
+        actualiser_ltz(position, params);
     }
 
     return 0;
