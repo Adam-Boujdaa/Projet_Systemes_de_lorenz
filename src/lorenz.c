@@ -11,7 +11,7 @@ Params *ask_parametres_lorentz (){
     printf("Choisir parametre beta : \n");
     scanf("%lf", &(params->beta));
     printf("Choisir parametre dt : \n");
-    scanf("%lf", &(params>dt));
+    scanf("%lf", &(params->dt));
     return params;
 }
 
