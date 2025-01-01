@@ -1,7 +1,7 @@
 struct SysDynamique {
     void (*pt_init)(coord *point); // Pointe vers la fonction init des coordonnées (x,y,z)
     void (*pt_actualiser)(coord * point, lorenz_settings *para); // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
-    struct lorenz_settings param;; // Tableau fixé au système dynamique (Lorenz : σ, ρ, β)
+    struct lorenz_settings* param; // Tableau fixé au système dynamique (Lorenz : σ, ρ, β)
 }
 
 struct lorenz_settings {

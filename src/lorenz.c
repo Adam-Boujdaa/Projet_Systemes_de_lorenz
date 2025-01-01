@@ -25,9 +25,9 @@ struct coord* ask_position_initiale(){       // Permet de demander la position i
 }
 
 void init_ltz(coord *point) {
-    point->x = x
-    point->y = y
-    point->z = z
+    point->x = x;
+    point->y = y;
+    point->z = z;
 }
 
 void actualiser_ltz(coord * point, lorenz_settings *para) {
@@ -39,3 +39,30 @@ void actualiser_ltz(coord * point, lorenz_settings *para) {
     point->y += dy * dt;
     point->z += dz * dt;
 }
+
+void creation_ltz(SysDynamique *systeme) {
+    systeme->pt_initial = init_ltz;
+    systeme->pt_actualiser = actualiser_ltz;
+
+    struct lorenz_settings*param = ask_parametres_lorentz;
+    systeme->param.sigma = params->sigma;
+    systeme->param.rho = params->rho;
+    systeme->param.beta = params->beta;
+}
+
+void choisir_sys(SysDynamique* systeme) {
+    printf("Liste du choix du système dynamique :\n");
+    printf("1 : Système de Lorentz.\n")
+    printf("Votre choix :\n")
+
+    int choix;
+
+    scanf("%d",&choix);
+
+    if (choix == 1) {
+        printf("Vous avez choisi le système de Lorenz.\n");
+        init_lorenz(systeme);
+    }
+}
+
+
