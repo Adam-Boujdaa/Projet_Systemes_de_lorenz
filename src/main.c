@@ -15,11 +15,11 @@ int main (){
     sim = ask_simulation_settings();
     
 
-    creation_ltz(&systeme);
+    creation_ltz(&systeme, params);
 
     systeme.pt_init(point);
 
-    generer_fichier("lorenz.dat", actualiser_ltz, point, params, sim);
+    generer_fichier("lorenz.dat", systeme.pt_actualiser, point, systeme.param, sim);
 
     // Tracer avec Gnuplot
     printf("Simulation terminée. Visualisation avec Gnuplot...\n");

@@ -37,8 +37,8 @@ SimSettings* ask_simulation_settings();
 
 void init_ltz(Coord*);
 void actualiser_ltz(Coord*, Params*, double);
-void creation_ltz(SysDynamique*);
-void choisir_sys(SysDynamique*);
+void creation_ltz(SysDynamique*, Params *params);
+void choisir_sys(SysDynamique*, Params *params);
 void generer_fichier(char*, void (*fct_actu)(Coord*, Params*, double), Coord*, Params*, SimSettings*);
 
 

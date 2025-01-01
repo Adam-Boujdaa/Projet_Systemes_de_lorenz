@@ -52,18 +52,22 @@ void actualiser_ltz(Coord *point, Params *para, double dt) {
 }
 
 
-void creation_ltz(SysDynamique *systeme) {
+void creation_ltz(SysDynamique *systeme, Params *params) {
     systeme->pt_init = init_ltz;
     systeme->pt_actualiser = actualiser_ltz;
 
-    Params *param = ask_parametres_lorentz();
+    systeme->param = malloc(sizeof(Params));
+    if (!systeme->param) {
+        fprintf(stderr, "Erreur\n");
+        exit(EXIT_FAILURE);
+    }
     
-    systeme->param->sigma = param->sigma;
-    systeme->param->rho = param->rho;
-    systeme->param->beta = param->beta;
+    systeme->param->sigma = params->sigma;
+    systeme->param->rho = params->rho;
+    systeme->param->beta = params->beta;
 }
 
-void choisir_sys(SysDynamique *systeme) {
+void choisir_sys(SysDynamique *systeme, Params *params) {
     printf("Liste du choix du système dynamique :\n");
     printf("1 : Système de Lorentz.\n");
     printf("Votre choix :\n");
@@ -74,7 +78,7 @@ void choisir_sys(SysDynamique *systeme) {
 
     if (choix == 1) {
         printf("Vous avez choisi le système de Lorenz.\n");
-        creation_ltz(systeme);
+        creation_ltz(systeme, params);
     }
 }
 
