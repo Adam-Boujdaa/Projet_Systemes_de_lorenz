@@ -22,6 +22,7 @@ typedef struct LorenzSettings Params;
 
 Params* ask_parametres_lorentz;
 Coord* ask_position_initiale;
+
 void init_ltz(Coord *point);
 void actualiser_ltz(Coord * point, Params *para);
 void creation_ltz(SysDynamique *systeme);

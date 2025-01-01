@@ -46,7 +46,8 @@ void creation_ltz(SysDynamique *systeme) {
     systeme->pt_initial = init_ltz;
     systeme->pt_actualiser = actualiser_ltz;
 
-    struct lorenz_settings*param = ask_parametres_lorentz();
+    Params *param = ask_parametres_lorentz();
+    
     systeme->param.sigma = params->sigma;
     systeme->param.rho = params->rho;
     systeme->param.beta = params->beta;
