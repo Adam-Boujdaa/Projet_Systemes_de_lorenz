@@ -2,53 +2,40 @@
  #include <stdlib.h>
  #include "lorenz.h"
 
-typedef struct {
-    void (*pt_init)(double*,double*,double*); // Pointe vers la fonction init des coordonnées (x,y,z)
-    void (*pt_actualiser)(double*, double*, double*, double); // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
-    double param[3]; // Tableau fixé au système dynamique (Lorenz : σ, ρ, β)
-} SysDynamique;
-
-void ask_parametres_lorentz (){
-    float sigma;
-    float beta;
-    float rho;
-    printf("Choisir parametre sigma : ");
-    scanf("%f", &sigma);
-    printf("Choisir parametre rho : ");
-    scanf("%f", &rho);
-    printf("Choisir parametre beta : ");
-    scanf("%f", &beta);
+struct lorenz_settings* ask_parametres_lorentz (){
+    struct lorenz_settings *params = malloc (sizeof(struct lorenz_settings));
+    printf("Choisir parametre sigma : \n");
+    scanf("%f", &(params->sigma));
+    printf("Choisir parametre rho : \n");
+    scanf("%f", &(params->rho));
+    printf("Choisir parametre beta : \n");
+    scanf("%f", &(params->beta));
+    return params;
 }
 
-void ask_coordonnees(){
-    float x;
-    float y;
-    float z;
-    printf("Choisir coordonnee x : ");
-    scanf("%f", &x);
-    printf("Choisir coordonnee y : ");
-    scanf("%f", &y);
-    printf("Choisir coordonnee z : ");
-    scanf("%f", &z);
+struct coord* ask_position_initiale(){       // Permet de demander la position initiale
+    struct coord * position = malloc(sizeof(struct coord));
+    printf("Choisir coordonnee x : \n");
+    scanf("%f", &(position->x));
+    printf("Choisir coordonnee y : \n");
+    scanf("%f", &(position->y));
+    printf("Choisir coordonnee z : \n");
+    scanf("%f", &(position->z));
+    return position;
 }
 
-void init_ltz(double* x, double* y, double* z) {
-    *x = 1.0
-    *y = 2.0
-    *z = 3.0
+void init_ltz(coord *point) {
+    point->x = x
+    point->y = y
+    point->z = z
 }
 
-void actualiaser_ltz(double* x, double* y, double* z, double dt) {
-    double sigma = 10.0;
-    double rho = 28.0;
-    double beta = 8.0 / 3.0;
+void actualiser_ltz(lorenz_settings *para) {
+    double dx = para->sigma * (point->y - point->x);
+    double dy = point->x * (para->rho - point->z) - point->y;
+    double dz = point->x * point->y - para->beta * point->z;
 
-    double dx = sigma * (*y - *x);
-    double dy = *x * (rho - *z) - *y;
-    double dz = *x * *y - beta * *z;
-
-    *x += dx * dt;
-    *y += dy * dt;
-    *z += dz * dt;
+    point->x += dx * dt;
+    point->y += dy * dt;
+    point->z += dz * dt;
 }
-
