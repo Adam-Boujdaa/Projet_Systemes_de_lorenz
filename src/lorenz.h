@@ -17,6 +17,12 @@ struct Coord {
     float z;
 };
 
+struct simulation_settings {  //pour simuler dans gnuplot
+    double dt;    // Incrément de temps
+    double Tmax;  // Temps maximal de simulation
+};
+
+typedef struct simulation_settings SimSettings;
 typedef struct Coord Coord;
 typedef struct LorenzSettings Params;
 
@@ -27,4 +33,6 @@ void init_ltz(Coord *point);
 void actualiser_ltz(Coord * point, Params *para);
 void creation_ltz(SysDynamique *systeme);
 void choisir_sys(SysDynamique* systeme);
+void ecrire_result (FILE *file, double t, Coord *point);
+SimSettings* ask_simulation_settings();
 

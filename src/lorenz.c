@@ -70,3 +70,16 @@ void choisir_sys(SysDynamique *systeme) {
 }
 
 
+void ecrire_result (FILE *file, double t, Coord *point) {
+    fprintf(file, "%.2f %.2f %.2f %.2f\n", t, point->x, point->y, point->z);
+}
+
+SimSettings* ask_simulation_settings() {
+    SimSettings* sim = malloc(sizeof(SimSettings));
+    printf("Choisir l'incrément de temps (dt) : ");
+    scanf("%lf", &(sim->dt));
+    printf("Choisir le temps maximal (Tmax) : ");
+    scanf("%lf", &(sim->Tmax));
+    return sim;
+}
+
