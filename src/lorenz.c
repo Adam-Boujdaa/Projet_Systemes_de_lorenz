@@ -4,11 +4,11 @@
 
 Coord *ask_position_initiale(){       // Permet de demander la position initiale
     Coord* position = malloc(sizeof(Coord));
-    printf("Choisir coordonnee x : \n");
+    printf("Choisir coordonnee x : ");
     scanf("%lf", &(position->x));
-    printf("Choisir coordonnee y : \n");
+    printf("Choisir coordonnee y : ");
     scanf("%lf", &(position->y));
-    printf("Choisir coordonnee z : \n");
+    printf("Choisir coordonnee z : ");
     scanf("%lf", &(position->z));
     return position;
 }
@@ -35,9 +35,9 @@ SimSettings* ask_simulation_settings() {
 
 
 void init_ltz(Coord *point) {
-    point->x = 0.0;
-    point->y = 0.0;
-    point->z = 0.0;
+    point->x = 1.0;
+    point->y = 2.0;
+    point->z = 3.0;
 }
 
 
@@ -96,10 +96,11 @@ void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double
     double t = 0;
 
     while(t < tmax) {
+        fprintf(f, "%lf %lf %lf %lf\n", t, pt->x, pt->y, pt->z);
         fct_actu(pt, params, dt);
         t += dt;
-        fprintf(f, "%lf %lf %lf %lf\n", t, pt->x, pt->y, pt->z);
     }
+
     fclose(f);
     printf("Le fichier %s a été créé.\n", nom_fichier);
 }

@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g
 
 # Target executable name
-TARGET = lorenz
+TARGET = lorenz.elf
 
 # Source and object files
 SRCS = main.c lorenz.c

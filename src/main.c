@@ -17,7 +17,7 @@ int main (){
 
     creation_ltz(&systeme, params);
 
-    systeme.pt_init(point);
+    //systeme.pt_init(point);
 
     generer_fichier("lorenz.dat", systeme.pt_actualiser, point, systeme.param, sim);
 
