@@ -30,7 +30,7 @@ void init_ltz(coord *point) {
     point->z = z
 }
 
-void actualiser_ltz(lorenz_settings *para) {
+void actualiser_ltz(coord * point, lorenz_settings *para) {
     double dx = para->sigma * (point->y - point->x);
     double dy = point->x * (para->rho - point->z) - point->y;
     double dz = point->x * point->y - para->beta * point->z;
