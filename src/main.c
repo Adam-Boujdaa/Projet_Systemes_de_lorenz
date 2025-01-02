@@ -21,6 +21,8 @@ int main (){
 
     generer_fichier("lorenz.dat", systeme.pt_actualiser, point, systeme.param, sim);
 
+    gnuplot("lorenz.dat");
+
     // Tracer avec Gnuplot
     printf("Simulation terminée. Visualisation avec Gnuplot...\n");
     system("gnuplot -e \"set parametric; splot 'lorenz.dat' u 2:3:4; pause -1\"");

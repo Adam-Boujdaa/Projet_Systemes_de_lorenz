@@ -2,6 +2,7 @@
  #include <stdlib.h>
  #include "lorenz.h"
 
+
 Coord *ask_position_initiale(){       // Permet de demander la position initiale
     Coord* position = malloc(sizeof(Coord));
     printf("Choisir coordonnee x : ");
@@ -13,6 +14,7 @@ Coord *ask_position_initiale(){       // Permet de demander la position initiale
     return position;
 }
 
+
 Params *ask_parametres_lorentz (){
     Params *params = malloc (sizeof(Params));
     printf("Choisir parametre Sigma : ");
@@ -23,6 +25,7 @@ Params *ask_parametres_lorentz (){
     scanf("%lf", &(params->beta));
     return params;
 }
+
 
 SimSettings* ask_simulation_settings() {
     SimSettings* sim = malloc(sizeof(SimSettings));
@@ -67,6 +70,7 @@ void creation_ltz(SysDynamique *systeme, Params *params) {
     systeme->param->beta = params->beta;
 }
 
+
 void choisir_sys(SysDynamique *systeme, Params *params) {
     printf("Liste du choix du système dynamique :\n");
     printf("1 : Système de Lorentz.\n");
@@ -106,4 +110,24 @@ void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double
 }
 
 
+void gnuplot(char* nom_fichier) {
 
+    // On ouvre un pipe pur ecrie a Gnuplot directement, qui agit comme un fichier
+    // On utilise le parametre -p (persist) pour que le programme ne se ferme pas
+    FILE *gnuplotPipe = popen("gnuplot -p", "w");
+    if (gnuplotPipe == NULL) {
+        fprintf(stderr, "Erreur lors de l'ouverture de Gnuplot.\n");
+        return;
+    }
+
+    // On envoie des commandes avec fprintf
+    // La premiere commande fait que la fenetre reste interactive
+    fprintf(gnuplotPipe, "set terminal wxt\n");
+    fprintf(gnuplotPipe, "set parametric\n");  // 
+    fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4\n", nom_fichier);
+
+    fflush(gnuplotPipe);
+
+    // On ferme le pipe apres avoir envoye toutes les commandes
+    pclose(gnuplotPipe);
+}
