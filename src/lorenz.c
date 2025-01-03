@@ -169,7 +169,7 @@ void gnuplot(char* nom_fichier) {
     // La premiere commande fait que la fenetre reste interactive
     fprintf(gnuplotPipe, "set terminal wxt\n");
     fprintf(gnuplotPipe, "set parametric\n");  // 
-    fprintf (gnuplotPipe, "set style data lines \n"); // pr relier les pts 
+    fprintf (gnuplotPipe, "set style data lines \n"); // pour relier les points 
     fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4\n", nom_fichier);
 
 
