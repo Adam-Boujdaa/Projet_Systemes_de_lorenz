@@ -15,9 +15,8 @@ int main (){
     sim = ask_simulation_settings();
     
 
-    creation_ltz(&systeme, params);
-
-    //systeme.pt_init(point);
+    choisir_sys(&systeme, params);
+    systeme.pt_init(point);
 
     generer_fichier("lorenz.dat", systeme.pt_actualiser, point, systeme.param, sim);
 

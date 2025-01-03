@@ -55,16 +55,51 @@ void actualiser_ltz(Coord *point, Params *para, double dt) {
 }
 
 
-void creation_ltz(SysDynamique *systeme, Params *params) {
-    systeme->pt_init = init_ltz;
-    systeme->pt_actualiser = actualiser_ltz;
+
+void init_oscillateur(Coord* point) {
+    point->x = 1.0;
+    point->y = 0.0;
+    point->z = 0.0;
+}
+
+void actualiser_oscillateur(Coord *point, Params *para, double dt) {
+    double dx = -para->beta * point->x;
+    double dy = para->sigma * (point->x - point->y);
+    double dz = 0.0;
+
+    point->x += dx * dt;
+    point->y += dy * dt;
+    point->z += dz * dt;
+}
+
+void init_spirale(Coord* point) {
+    point->x = 0.5;
+    point->y = 0.5;
+    point->z = 0.5;
+}
+
+void actualiser_spirale(Coord *point, Params *para, double dt) {
+    double dx = -point->y;
+    double dy = point->x;
+    double dz = para->rho * (1 - point->z);
+
+    point->x += dx * dt;
+    point->y += dy * dt;
+    point->z += dz * dt;
+}
+
+void creation_sys(SysDynamique *systeme, void (*init_sys)(Coord*),
+                      void (*actualiser_sys)(Coord*, Params*, double),
+                      Params* params) {
+    systeme->pt_init = init_sys;
+    systeme->pt_actualiser = actualiser_sys;
 
     systeme->param = malloc(sizeof(Params));
     if (!systeme->param) {
         fprintf(stderr, "Erreur\n");
         exit(EXIT_FAILURE);
     }
-    
+
     systeme->param->sigma = params->sigma;
     systeme->param->rho = params->rho;
     systeme->param->beta = params->beta;
@@ -74,6 +109,8 @@ void creation_ltz(SysDynamique *systeme, Params *params) {
 void choisir_sys(SysDynamique *systeme, Params *params) {
     printf("Liste du choix du système dynamique :\n");
     printf("1 : Système de Lorentz.\n");
+    printf("2 : Oscillateur simple.\n");
+    printf("3 : Spirale.\n");
     printf("Votre choix :\n");
 
     int choix;
@@ -82,7 +119,15 @@ void choisir_sys(SysDynamique *systeme, Params *params) {
 
     if (choix == 1) {
         printf("Vous avez choisi le système de Lorenz.\n");
-        creation_ltz(systeme, params);
+        creation_sys(systeme, init_ltz, actualiser_ltz, params);
+    }
+    if (choix == 2) {
+        printf("Vous avez choisi le système d'oscillateur simple.\n");
+        creation_sys(systeme, init_oscillateur, actualiser_oscillateur, params);
+    }
+    if (choix == 1) {
+        printf("Vous avez choisi le système de spirale.\n");
+        creation_sys(systeme, init_spirale, actualiser_spirale, params);
     }
 }
 

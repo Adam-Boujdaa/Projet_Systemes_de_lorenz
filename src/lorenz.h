@@ -36,8 +36,12 @@ Params* ask_parametres_lorentz();
 SimSettings* ask_simulation_settings();
 void init_ltz(Coord*);
 void actualiser_ltz(Coord*, Params*, double);
-void creation_ltz(SysDynamique*, Params *params);
-void choisir_sys(SysDynamique*, Params *params);
+void creation_sys(SysDynamique *systeme, void (*init_sys)(Coord*), void (*actualiser_sys)(Coord*, Params*, double),Params* params);
+void init_oscillateur(Coord* point);
+void actualiser_oscillateur(Coord *point, Params *para, double dt);
+void init_spirale(Coord* point);
+void actualiser_spirale(Coord *point, Params *para, double dt);
+void choisir_sys(SysDynamique *systeme, Params *params);
 void generer_fichier(char*, void (*fct_actu)(Coord*, Params*, double), Coord*, Params*, SimSettings*);
 void gnuplot(char*);
 
