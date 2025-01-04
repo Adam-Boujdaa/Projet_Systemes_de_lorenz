@@ -183,7 +183,7 @@ void gnuplot(char* nom_fichier) {
 
 
 
-char * ask_notation_pol_inv(){
+char * ask_notation_pol_inv(){  //notation polonaise inversee (NPI)
     char * res = malloc(1); //allocation initiale de la memory
     
     int size = 1; //taille actuelle preparee pour l'entree utilisateur
@@ -203,3 +203,27 @@ char * ask_notation_pol_inv(){
     res[length] = "\0"; //caractere de fin de chaine
     return res;
     }
+
+double eval_npi(const char* npi,double x, double y, double z){
+    double pile[100]; //creation d'une pile de taille fixe
+    int top = -1; //indice du sommet de la pile = derniere case
+    const char *npi_2 = npi;
+    while (*npi_2 != "\0"){ //pr parcourir chaque caractere jusqu'a la fin de la chaine
+        if (isspace(*npi_2)){ //ignore les espaces dans la formule a notation npi
+            npi_2++; //avancer le pointeur 
+        }
+
+        if (*npi_2 == 'x') {
+            pile[++top] = x;  // Ajoute la valeur de x au sommet de la pile
+        } else if (*npi_2 == 'y') {
+            pile[++top] = y;  // idem pr y
+        } else if (*npi_2 == 'z') {
+            pile[++top] = z;  // idem pr z
+        } else if (*npi_2 == '+' || *npi_2 == '-' || *npi_2 == '*' || *npi_2 == '/') {
+            if (top < 1) {  // Vérifie qu'il y a au moins deux opérandes
+                printf("Erreur : pas assez d'opérandes.\n");
+                return 0;  // Erreur si la pile est vide ou a un seul élément
+    }
+    }
+    
+}
