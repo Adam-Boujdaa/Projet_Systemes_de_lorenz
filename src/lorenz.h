@@ -44,5 +44,6 @@ void actualiser_spirale(Coord *point, Params *para, double dt);
 void choisir_sys(SysDynamique *systeme, Params *params);
 void generer_fichier(char*, void (*fct_actu)(Coord*, Params*, double), Coord*, Params*, SimSettings*);
 void gnuplot(char*);
+char* ask_notation_pol_inv();
 
 

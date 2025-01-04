@@ -2,6 +2,8 @@
  #include <stdlib.h>
  #include "lorenz.h"
 
+#include <ctype.h> //pr verifier si un caractere est un operateur, un char ou un chiffre
+#include <string.h> // pour utiliser les "types" string
 
 Coord *ask_position_initiale(){       // Permet de demander la position initiale
     Coord* position = malloc(sizeof(Coord));
@@ -178,3 +180,26 @@ void gnuplot(char* nom_fichier) {
     // On ferme le pipe apres avoir envoye toutes les commandes
     pclose(gnuplotPipe);
 }
+
+
+
+char * ask_notation_pol_inv(){
+    char * res = malloc(1); //allocation initiale de la memory
+    
+    int size = 1; //taille actuelle preparee pour l'entree utilisateur
+    int length = 0; //longueur de la chaine str lue (type dans string.h)
+    char c;
+
+    printf("Entrez la formule en notation polonaise inversee : \n");
+    while (scanf(" %c", &c)==1 && c!='\n'){  //tant qu'il y a un caractere et pas de retour a la ligne, la boucle continue, pr pouvoir lire les expressions completes sans limite de taille
+        if (length + 1 >= size){
+            size = size*2;   //pour ne pas allocate trop de memoire pour la chaine de characteres lue, et pr ne pas trop repeter la boucle
+            res = realloc (res,size); // creer un nouveau resultat pr agrandir dynamiquement la memoire en gardant le contenu d'avant
+        }
+        res[length] = c; //pr ajouter les caracteres 1 par 1
+        length += 1; //pour incrementer la longueur a chaque iteration de la boucle while
+
+    }
+    res[length] = "\0"; //caractere de fin de chaine
+    return res;
+    }
