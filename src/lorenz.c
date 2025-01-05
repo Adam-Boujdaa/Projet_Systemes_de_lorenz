@@ -371,6 +371,7 @@ void gnuplot_interface(char *nom_fichier)
     gnuplot_cmd(h, "set terminal wxt\n");
     gnuplot_cmd(h, "set parametric\n");
     gnuplot_cmd(h, "splot \"%s\" u 2:3:4\n", nom_fichier);
+    gnuplot_cmd(h, "pause -1");
 
     // gnuplot_close(h);
 }

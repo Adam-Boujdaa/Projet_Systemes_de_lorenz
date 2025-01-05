@@ -91,15 +91,8 @@ Choisir le temps maximal (Tmax) : 10
 
 ```
 
-Etape 5 : On met à jour les vitesses (Optionnel)
 
-```
-Mettre à jour la vitesse ?
-Oui : 1
-Non : 0
-```
-
-Si Oui, entrer les formules en NPI :
+Si on choisit l'option 4, on doit entrer les formules en NPI :
 ```
 Mise à jour de la vitesse selon x, en notation polonaise inversée :
 x y +
