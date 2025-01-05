@@ -19,7 +19,6 @@ int main()
         ask_maj_vitesse(point, sim, params);
     }
     systeme.pt_init(point);
-    // pr laisser le user choisir si il veut une maj de la vitesse ou non
 
     // partie simulation gnuplot
     generer_fichier("lorenz.dat", systeme.pt_actualiser, point, systeme.param, sim);
