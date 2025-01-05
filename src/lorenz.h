@@ -42,5 +42,5 @@ void choisir_sys(SysDynamique *systeme, Params *params);
 void generer_fichier(char*, void (*fct_actu)(Coord*, Params*, double), Coord*, Params*, SimSettings*);
 void gnuplot(char*);
 char* ask_notation_pol_inv();
-
+double eval_npi(const char* npi,double x, double y, double z);
 

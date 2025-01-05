@@ -1,9 +1,7 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include "lorenz.h"
-
-#include <ctype.h> //pr verifier si un caractere est un operateur, un char ou un chiffre
-#include <string.h> // pour utiliser les "types" string
+#include <stdio.h>
+#include <stdlib.h>
+#include "lorenz.h"
+#include <ctype.h> //pr isspace (notation polonaise inversee)
 
 void init(Coord *point) {
     printf("Coordonnée initiale x : ");
@@ -149,7 +147,7 @@ void gnuplot(char* nom_fichier) {
     // La premiere commande fait que la fenetre reste interactive
     fprintf(gnuplotPipe, "set terminal wxt\n");
     fprintf(gnuplotPipe, "set parametric\n");  // 
-    fprintf (gnuplotPipe, "set style data lines \n"); // pour relier les points 
+    // fprintf (gnuplotPipe, "set style data lines \n");  pour relier les points si on veut
     fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4\n", nom_fichier);
 
 
@@ -168,40 +166,92 @@ char * ask_notation_pol_inv(){  //notation polonaise inversee (NPI)
     int length = 0; //longueur de la chaine str lue (type dans string.h)
     char c;
 
-    printf("Entrez la formule en notation polonaise inversee : \n");
-    while (scanf(" %c", &c)==1 && c!='\n'){  //tant qu'il y a un caractere et pas de retour a la ligne, la boucle continue, pr pouvoir lire les expressions completes sans limite de taille
-        if (length + 1 >= size){
+    // Pour entrer la formule en notation polonaise inversee 
+    while (scanf("%c", &c)==1){  
+        if (c=='\n') {
+            break; //tant qu'il y a un caractere et pas de retour a la ligne, la boucle continue, pr pouvoir lire les expressions completes sans limite de taille
+        }
+        else if (length + 1 >= size){
             size = size*2;   //pour ne pas allocate trop de memoire pour la chaine de characteres lue, et pr ne pas trop repeter la boucle
             res = realloc (res,size); // creer un nouveau resultat pr agrandir dynamiquement la memoire en gardant le contenu d'avant
         }
+        if (!isspace(c)){ //pr ignorer les espaces
         res[length] = c; //pr ajouter les caracteres 1 par 1
-        length += 1; //pour incrementer la longueur a chaque iteration de la boucle while
-
+        length ++; //pour incrementer la longueur a chaque iteration de la boucle while
+        }
     }
-    res[length] = "\0"; //caractere de fin de chaine
+    res[length] = '\0'; //caractere de fin de chaine
     return res;
     }
 
 double eval_npi(const char* npi,double x, double y, double z){
     double pile[100]; //creation d'une pile de taille fixe
-    int top = -1; //indice du sommet de la pile = derniere case
+    int top = 0; //nb d'elements dans la pile
     const char *npi_2 = npi;
-    while (*npi_2 != "\0"){ //pr parcourir chaque caractere jusqu'a la fin de la chaine
-        if (isspace(*npi_2)){ //ignore les espaces dans la formule a notation npi
-            npi_2++; //avancer le pointeur 
+    while (*npi_2 != '\0'){ //pr parcourir chaque caractere jusqu'a la fin de la chaine
+        if (isspace(*npi_2)!=1){  //verifie si le caractere est un espace, pour l'ignorer apres si c'est le cas
+
+            if (*npi_2 == 'x') { // Ajoute la valeur de x au sommet de la pile
+                pile[top] = x;
+                top++;  
+            } else if (*npi_2 == 'y') {
+                pile[top] = y;  // idem pr y
+                top++;
+            } else if (*npi_2 == 'z') {
+                pile[top] = z;  // idem pr z
+                top++;
+            } else if (*npi_2 == '+' || *npi_2 == '-' || *npi_2 == '*' || *npi_2 == '/') {
+                if (top < 1) {  // Vérifie qu'il y a au moins deux opérandes
+                    printf("Erreur : pas assez d'opérandes.\n");
+                    return 0; 
+                }
+                
+                double b = pile[top-1]; //derniere valeur dans la pile
+                double a = pile[top-2]; //avant derniere valeur
+
+                if (*npi_2 == '+'){
+                    pile[top-2]= a+b ; //addition
+                }
+
+                else if (*npi_2 == '-'){
+                    pile[top-2]= a-b ; //soustraction
+                }
+
+                else if (*npi_2 == '*'){
+                    pile[top-2]= a*b ; //multiplication
+                }
+
+                else if(*npi_2 == '/'){
+                    pile[top-2] = a/b; //division
+                }
+
+                else {
+                    printf("Erreur : operateur inconnu dans la formule de notation polonaise inversee \n");
+                    return 0;
+                }
+                top --; //reduire le nombre d'elements dans la pile apres l'operation
+            }
+            else {
+                printf("Caractere inconnu dans la formule de notation polonaise inversee \n");
+                return 0;
+            }
+            npi_2++; //avancer le pointeur vers le caractere suivant
+            
+        
+
         }
 
-        if (*npi_2 == 'x') {
-            pile[++top] = x;  // Ajoute la valeur de x au sommet de la pile
-        } else if (*npi_2 == 'y') {
-            pile[++top] = y;  // idem pr y
-        } else if (*npi_2 == 'z') {
-            pile[++top] = z;  // idem pr z
-        } else if (*npi_2 == '+' || *npi_2 == '-' || *npi_2 == '*' || *npi_2 == '/') {
-            if (top < 1) {  // Vérifie qu'il y a au moins deux opérandes
-                printf("Erreur : pas assez d'opérandes.\n");
-                return 0;  // Erreur si la pile est vide ou a un seul élément
+        else {
+        //ignore les espaces dans la formule a notation npi
+                npi_2++; //avancer le pointeur 
+        }
+        
     }
+    if (top ==1) {
+            return pile[0]; //retourne le dernier element comme resultat
+        }
+    else {
+        printf("Erreur : pile incorrecte a la fin \n ");
+        return 0;
     }
-    
 }
