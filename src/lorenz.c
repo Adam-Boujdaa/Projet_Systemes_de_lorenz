@@ -39,6 +39,7 @@ SimSettings *ask_simulation_settings() // Fonction qui demande les paramètres d
 
 void actualiser_ltz(Coord *point, Params *para, double dt) // Fonction qui met à jour les coordonnées du point selon les équations du système de Lorentz
 {   // Calcul des variations des coordonnées selon les équations du système du dynamique
+
     double dx = para->sigma * (point->y - point->x);
     double dy = point->x * (para->rho - point->z) - point->y;
     double dz = point->x * point->y - para->beta * point->z;
@@ -159,7 +160,7 @@ void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double
 
 
 void gnuplot(char* nom_fichier) {
-    FILE *gnuplotPipe = popen("gnuplot -p", "w"); // On ouvrommuniquer avec Gnuplot
+    FILE *gnuplotPipe = popen("gnuplot -p", "w"); // On ouvre un pipe pour communiquer avec Gnuplot
     if (gnuplotPipe == NULL) {
         fprintf(stderr, "Gnuplot n'ouvre pas, erreur.\n");
         return;
@@ -173,7 +174,7 @@ void gnuplot(char* nom_fichier) {
     fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4:5 with points pt 7 ps 1.5 palette\n", nom_fichier); // Trace les données du fichier en 3D (vitesse par couleur)
 
     fflush(gnuplotPipe);
-    pclose(gnuplotPipe);
+    pclose(gnuplotPipe); // On ferme pipe
 }
 
 /*
