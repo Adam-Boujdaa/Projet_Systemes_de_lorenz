@@ -71,7 +71,6 @@ Etape 2 : On configure la simulation
 ```
 Choisir l'incrément de temps (dt) : 0.01
 Choisir le temps maximal (Tmax) : 10
-
 ```
 
 Etape 3 : On choisit le système dynamique 
@@ -100,7 +99,6 @@ Etape 4 : On initie les coordonnées du système dynamique
 Coordonnée initiale x : 1.0
 Coordonnée initiale y : 1.0
 Coordonnée initiale z : 1.0
-
 ```
 
 
