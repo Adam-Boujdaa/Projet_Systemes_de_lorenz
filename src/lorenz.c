@@ -5,7 +5,7 @@
 #include "gnuplot_i.h"
 #include <ctype.h> //pr isspace (notation polonaise inversee)
 
-void init(Coord *point)
+void init(Coord *point) // Fonction qui initialise les coordonnées d'un point (x,y,z)
 {
     printf("Coordonnée initiale x : ");
     scanf("%lf", &(point->x));
@@ -15,7 +15,7 @@ void init(Coord *point)
     scanf("%lf", &(point->z));
 }
 
-Params *ask_parametres_lorentz()
+Params *ask_parametres_lorentz() // Fonction qui demande à l'utilisateur de choisir les paramètres pour le système dynamique
 {
     Params *params = malloc(sizeof(Params));
     printf("Choisir parametre Sigma : ");
@@ -27,7 +27,7 @@ Params *ask_parametres_lorentz()
     return params;
 }
 
-SimSettings *ask_simulation_settings()
+SimSettings *ask_simulation_settings() // Fonction qui demande les paramètres de la simulation (dt et Tmax)
 {
     SimSettings *sim = malloc(sizeof(SimSettings));
     printf("Choisir l'incrément de temps (dt) : ");
@@ -37,18 +37,20 @@ SimSettings *ask_simulation_settings()
     return sim;
 }
 
-void actualiser_ltz(Coord *point, Params *para, double dt)
-{
+void actualiser_ltz(Coord *point, Params *para, double dt) // Fonction qui met à jour les coordonnées du point selon les équations du système de Lorentz
+{   // Calcul des variations des coordonnées selon les équations du système du dynamique
     double dx = para->sigma * (point->y - point->x);
     double dy = point->x * (para->rho - point->z) - point->y;
     double dz = point->x * point->y - para->beta * point->z;
+
+    // Mise à jour des coordonnées avec l'incrément de temps
 
     point->x += dx * dt;
     point->y += dy * dt;
     point->z += dz * dt;
 }
 
-void actualiser_oscillateur(Coord *point, Params *para, double dt)
+void actualiser_oscillateur(Coord *point, Params *para, double dt) // Fonction qui met à jour les coordonnées du point selon les équations du système de l'oscillateur simple
 {
     double dx = -para->beta * point->x;
     double dy = para->sigma * (point->x - point->y);
@@ -59,18 +61,17 @@ void actualiser_oscillateur(Coord *point, Params *para, double dt)
     point->z += dz * dt;
 }
 
-void actualiser_spirale(Coord *point, Params *para, double dt)
+void actualiser_spirale(Coord *point, Params *para, double dt) // Fonction qui met à jour les coordonnées du point selon les équations du système d'une spirale
 {
     double dx = -point->y;
     double dy = point->x;
     double dz = para->rho * (1 - point->z);
-
     point->x += dx * dt;
     point->y += dy * dt;
     point->z += dz * dt;
 }
 
-void creation_sys(SysDynamique *systeme, void (*init_sys)(Coord *),
+void creation_sys(SysDynamique *systeme, void (*init_sys)(Coord *), // Fonction qui initialise un système dynamique avec ses fonctions d'initialisation et d'actualisation
                   void (*actualiser_sys)(Coord *, Params *, double),
                   Params *params)
 {
@@ -83,13 +84,14 @@ void creation_sys(SysDynamique *systeme, void (*init_sys)(Coord *),
         fprintf(stderr, "Erreur\n");
         exit(EXIT_FAILURE);
     }
-
+    // Copie les paramètres du système dans la structure
     systeme->param->sigma = params->sigma;
     systeme->param->rho = params->rho;
     systeme->param->beta = params->beta;
 }
 
 int choisir_sys(SysDynamique *systeme, Params *params)
+// Fonction qui permet à l'utilisateur de choisir le système dynamique à simuler.
 {
     printf("Liste du choix du système dynamique :\n");
     printf("    1 : Système de Lorentz.\n");
@@ -105,7 +107,7 @@ int choisir_sys(SysDynamique *systeme, Params *params)
     if (choix == 1)
     {
         printf("Vous avez choisi le système de Lorenz.\n");
-        creation_sys(systeme, init, actualiser_ltz, params);
+        creation_sys(systeme, init, actualiser_ltz, params); // On initie un système dynamique avec ses fonctions d'initialisation (init) et d'actualisation (actualiser_ltz)
         return 1;
     }
     else if (choix == 2)
@@ -133,7 +135,7 @@ int choisir_sys(SysDynamique *systeme, Params *params)
 }
 
 void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double), Coord *pt, Params *params, SimSettings *sim) {
-    FILE *f = fopen(nom_fichier, "w");
+    FILE *f = fopen(nom_fichier, "w"); // Ouvre un fichier en mode écriture
 
     if (!f) {
         perror("Erreur lors de l'ouverture du fichier.");
@@ -143,11 +145,11 @@ void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double
     double tmax = sim->tmax;
     double dt = sim->dt;
     double t = 0;
-
+    // Boucle jusqu'à atteindre le temps maximal
     while(t < tmax) {
-        double vit = sqrt(pt->x * pt->x + pt->y * pt->y + pt->z * pt->z);
-        fprintf(f, "%lf %lf %lf %lf %lf\n", t, pt->x, pt->y, pt->z, vit);
-        fct_actu(pt, params, dt);
+        double vit = sqrt(pt->x * pt->x + pt->y * pt->y + pt->z * pt->z);  // On calcule la vitesse du point
+        fprintf(f, "%lf %lf %lf %lf %lf\n", t, pt->x, pt->y, pt->z, vit); // On écrit les données dans le fichier f
+        fct_actu(pt, params, dt); // mise à jour des coordonnées
         t += dt;
     }
 
@@ -155,19 +157,20 @@ void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double
     printf("Le fichier %s a été crée.\n", nom_fichier);
 }
 
+
 void gnuplot(char* nom_fichier) {
-    FILE *gnuplotPipe = popen("gnuplot -p", "w");
+    FILE *gnuplotPipe = popen("gnuplot -p", "w"); // On ouvrommuniquer avec Gnuplot
     if (gnuplotPipe == NULL) {
         fprintf(stderr, "Gnuplot n'ouvre pas, erreur.\n");
         return;
     }
 
-    fprintf(gnuplotPipe, "set terminal wxt\n");
-    fprintf(gnuplotPipe, "set parametric\n");
+    fprintf(gnuplotPipe, "set terminal wxt\n"); // on définit un terminal pour l'affichage
+    fprintf(gnuplotPipe, "set parametric\n"); // on active le mode paramétrique
 
-    fprintf(gnuplotPipe, "set palette model RGB defined ( 0 'blue', 1 'green', 2 'yellow', 3 'red' )\n"); // Définir la palette de couleurs
+    fprintf(gnuplotPipe, "set palette model RGB defined ( 0 'blue', 1 'green', 2 'yellow', 3 'red' )\n"); // Définition d'une palette de couleur
 
-    fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4:5 with points pt 7 ps 1.5 palette\n", nom_fichier); // Tracer en 3D avec la vitesse en couleur
+    fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4:5 with points pt 7 ps 1.5 palette\n", nom_fichier); // Trace les données du fichier en 3D (vitesse par couleur)
 
     fflush(gnuplotPipe);
     pclose(gnuplotPipe);
