@@ -1,4 +1,5 @@
-struct LorenzSettings {
+struct LorenzSettings
+{
     double sigma;
     double beta;
     double rho;
@@ -6,7 +7,8 @@ struct LorenzSettings {
 
 typedef struct LorenzSettings Params;
 
-struct Coord {
+struct Coord
+{
     double x;
     double y;
     double z;
@@ -14,33 +16,37 @@ struct Coord {
 
 typedef struct Coord Coord;
 
-
-struct SimSettings {  //pour simuler dans gnuplot
-    double dt;    // Incrément de temps
-    double tmax;  // Temps maximal de simulation
+struct SimSettings
+{                // pour simuler dans gnuplot
+    double dt;   // Incrément de temps
+    double tmax; // Temps maximal de simulation
 };
 
 typedef struct SimSettings SimSettings;
 
-
-struct SysDynamique {
-    void (*pt_init)(Coord *point); // Pointe vers la fonction init des coordonnées (x,y,z)
-    void (*pt_actualiser)(Coord * point, Params *para, double dt); // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
-    Params *param; // Tableau fixé au système dynamique (Lorenz : σ, ρ, β) + dt
+struct SysDynamique
+{
+    // Pointe vers la fonction init des coordonnées (x,y,z)
+    void (*pt_init)(Coord *point);                                
+    // Pointe vers la fonction actualiser des coordonnées x, y,z et dt
+    void (*pt_actualiser)(Coord *point, Params *para, double dt);
+    // Tableau fixé au système dynamique (Lorenz : σ, ρ, β) + dt
+    Params *param;                                                
 };
 
 typedef struct SysDynamique SysDynamique;
 
-Params* ask_parametres_lorentz();
-SimSettings* ask_simulation_settings();
-void init(Coord*);
-void actualiser_ltz(Coord*, Params*, double);
-void creation_sys(SysDynamique *systeme, void (*init_sys)(Coord*), void (*actualiser_sys)(Coord*, Params*, double),Params* params);
+Params *ask_parametres_lorentz();
+SimSettings *ask_simulation_settings();
+void init(Coord *);
+void actualiser_ltz(Coord *, Params *, double);
+void creation_sys(SysDynamique *systeme, void (*init_sys)(Coord *), void (*actualiser_sys)(Coord *, Params *, double), Params *params);
 void actualiser_oscillateur(Coord *point, Params *para, double dt);
 void actualiser_spirale(Coord *point, Params *para, double dt);
-void choisir_sys(SysDynamique *systeme, Params *params);
-void generer_fichier(char*, void (*fct_actu)(Coord*, Params*, double), Coord*, Params*, SimSettings*);
-void gnuplot(char*);
-char* ask_notation_pol_inv();
-double eval_npi(const char* npi,double x, double y, double z);
-
+int choisir_sys(SysDynamique *systeme, Params *params);
+void generer_fichier(char *, void (*fct_actu)(Coord *, Params *, double), Coord *, Params *, SimSettings *);
+void gnuplot(char *);
+char *ask_notation_pol_inv();
+double eval_npi(const char *, Coord *, Params *);
+void gnuplot_int(char *);
+void ask_maj_vitesse(Coord *, SimSettings *, Params *);

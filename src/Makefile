@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -g
 
 TARGET = lorenz.elf
 
-SRCS = main.c lorenz.c
+SRCS = main.c lorenz.c gnuplot_i.c
 OBJS = $(SRCS:.c=.o)
 
 $(TARGET): $(OBJS)
