@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lorenz.h"
+#include <math.h>
 #include "gnuplot_i.h"
 #include <ctype.h> //pr isspace (notation polonaise inversee)
 
@@ -131,11 +132,10 @@ int choisir_sys(SysDynamique *systeme, Params *params)
     }
 }
 
-void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord *, Params *, double), Coord *pt, Params *params, SimSettings *sim){
+void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord*, Params*, double), Coord *pt, Params *params, SimSettings *sim) {
     FILE *f = fopen(nom_fichier, "w");
 
-    if (!f)
-    {
+    if (!f) {
         perror("Erreur lors de l'ouverture du fichier.");
         return;
     }
@@ -144,38 +144,32 @@ void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord *, Params *, doub
     double dt = sim->dt;
     double t = 0;
 
-    while (t < tmax)
-    {
-        fprintf(f, "%lf %lf %lf %lf\n", t, pt->x, pt->y, pt->z);
+    while(t < tmax) {
+        double vit = sqrt(pt->x * pt->x + pt->y * pt->y + pt->z * pt->z);
+        fprintf(f, "%lf %lf %lf %lf %lf\n", t, pt->x, pt->y, pt->z, vit);
         fct_actu(pt, params, dt);
         t += dt;
     }
 
     fclose(f);
-    printf("Le fichier %s a été créé.\n", nom_fichier);
+    printf("Le fichier %s a été crée.\n", nom_fichier);
 }
 
-void gnuplot(char *nom_fichier)
-{
-    // On ouvre un pipe pur ecrie a Gnuplot directement, qui agit comme un fichier
-    // On utilise le parametre -p (persist) pour que le programme ne se ferme pas
+void gnuplot(char* nom_fichier) {
     FILE *gnuplotPipe = popen("gnuplot -p", "w");
-    if (gnuplotPipe == NULL)
-    {
-        fprintf(stderr, "Erreur lors de l'ouverture de Gnuplot.\n");
+    if (gnuplotPipe == NULL) {
+        fprintf(stderr, "Gnuplot n'ouvre pas, erreur.\n");
         return;
     }
 
-    // On envoie des commandes avec fprintf
-    // La premiere commande fait que la fenetre reste interactive
     fprintf(gnuplotPipe, "set terminal wxt\n");
-    fprintf(gnuplotPipe, "set parametric\n"); //
-    // fprintf (gnuplotPipe, "set style data lines \n");  pour relier les points si on veut
-    fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4\n", nom_fichier);
+    fprintf(gnuplotPipe, "set parametric\n");
+
+    fprintf(gnuplotPipe, "set palette model RGB defined ( 0 'blue', 1 'green', 2 'yellow', 3 'red' )\n"); // Définir la palette de couleurs
+
+    fprintf(gnuplotPipe, "splot \"%s\" u 2:3:4:5 with points pt 7 ps 1.5 palette\n", nom_fichier); // Tracer en 3D avec la vitesse en couleur
 
     fflush(gnuplotPipe);
-
-    // On ferme le pipe apres avoir envoye toutes les commandes
     pclose(gnuplotPipe);
 }
 
