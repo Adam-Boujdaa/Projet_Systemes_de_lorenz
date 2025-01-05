@@ -12,13 +12,13 @@ int main()
     // Demander les paramètres et la position initiale + demander mise a jour de vitesse npi
 
     params = ask_parametres_lorentz();
+
     sim = ask_simulation_settings();
     if (choisir_sys(&systeme, params) == 4)
     {
         ask_maj_vitesse(point, sim, params);
     }
     systeme.pt_init(point);
-
     // pr laisser le user choisir si il veut une maj de la vitesse ou non
 
     // partie simulation gnuplot

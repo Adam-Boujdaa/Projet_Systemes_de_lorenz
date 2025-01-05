@@ -48,5 +48,5 @@ void generer_fichier(char *, void (*fct_actu)(Coord *, Params *, double), Coord 
 void gnuplot(char *);
 char *ask_notation_pol_inv();
 double eval_npi(const char *, Coord *, Params *);
-void gnuplot_int(char *);
+void gnuplot_interface(char *);
 void ask_maj_vitesse(Coord *, SimSettings *, Params *);

@@ -131,8 +131,7 @@ int choisir_sys(SysDynamique *systeme, Params *params)
     }
 }
 
-void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord *, Params *, double), Coord *pt, Params *params, SimSettings *sim)
-{
+void generer_fichier(char *nom_fichier, void (*fct_actu)(Coord *, Params *, double), Coord *pt, Params *params, SimSettings *sim){
     FILE *f = fopen(nom_fichier, "w");
 
     if (!f)
@@ -208,7 +207,7 @@ char * ask_notation_pol_inv(){  //notation polonaise inversee (NPI)
 
 double eval_npi(const char* npi, Coord *point, Params *params){
     double pile[100]; //creation d'une pile de taille fixe
-    int top = 0; //nb d'elements dans la pile
+    int top = 0; //nb d'elechar *expression_x = ask_notation_pol_inv();ments dans la pile
     const char *npi_2 = npi;
     while (*npi_2 != '\0'){ //pr parcourir chaque caractere jusqu'a la fin de la chaine
         if (isspace(*npi_2)!=1){  //verifie si le caractere est un espace, pour l'ignorer apres si c'est le cas
@@ -295,70 +294,46 @@ char *ask_notation_pol_inv()
     return res;
 }
 
-double eval_npi(const char *npi, Coord *coord, Params *params)
-{
+double eval_npi(const char *npi, Coord *coord, Params *params) {
     double pile[100]; // Création d'une pile de taille fixe
     int top = 0;      // Nombre d'éléments dans la pile
 
-    while (*npi)
-    { // Parcourir chaque caractère de la chaîne jusqu'à la fin
-        if (!isspace(*npi))
-        { // Ignorer les espaces
-            // Ajouter les variables x, y, z, s (sigma), b (beta) et r (rho) dans la pile
-            if (*npi == 'x')
-                pile[top++] = coord->x;
-            else if (*npi == 'y')
-                pile[top++] = coord->y;
-            else if (*npi == 'z')
-                pile[top++] = coord->z;
-            else if (*npi == 's')
-                pile[top++] = params->sigma;
-            else if (*npi == 'b')
-                pile[top++] = params->beta;
-            else if (*npi == 'r')
-                pile[top++] = params->rho;
+    while (*npi) {  // Parcourir chaque caractère de la chaîne jusqu'à la fin
+        if (!isspace(*npi)) {  // Ignorer les espaces
+            if (*npi == 'x') pile[top++] = coord->x;
+            else if (*npi == 'y') pile[top++] = coord->y;
+            else if (*npi == 'z') pile[top++] = coord->z;
+            else if (*npi == 's') pile[top++] = params->sigma;
+            else if (*npi == 'b') pile[top++] = params->beta;
+            else if (*npi == 'r') pile[top++] = params->rho;
 
-            // Effectuer les opérations arithmétiques
-            else if (*npi == '+' || *npi == '-' || *npi == '*' || *npi == '/')
-            {
-                if (top < 2)
-                { // Vérifie qu'il y a au moins deux opérandes
+            else if (*npi == '+' || *npi == '-' || *npi == '*' || *npi == '/') {
+                if (top < 2) {
                     printf("Erreur : pas assez d'opérandes.\n");
                     return 0;
                 }
-                double b = pile[--top]; // Dernière valeur dans la pile
-                double a = pile[--top]; // Avant-dernière valeur
-                switch (*npi)
-                {
-                case '+':
-                    pile[top++] = a + b;
-                    break; // Addition
-                case '-':
-                    pile[top++] = a - b;
-                    break; // Soustraction
-                case '*':
-                    pile[top++] = a * b;
-                    break; // Multiplication
-                case '/':
+                double b = pile[--top];  // Dernière valeur dans la pile
+                double a = pile[--top];  // Avant-dernière valeur
+
+                if (*npi == '+') pile[top++] = a + b;
+                else if (*npi == '-') pile[top++] = a - b;
+                else if (*npi == '*') pile[top++] = a * b;
+                else if (*npi == '/') {
+                    if (b == 0) {
+                        printf("Erreur : division par zéro.\n");
+                        return 0;
+                    }
                     pile[top++] = a / b;
-                    break; // Division
-                default:
-                    printf("Erreur : opérateur inconnu '%c'.\n", *npi);
-                    return 0;
                 }
-            }
-            // Gérer les caractères inconnus
-            else
-            {
+            } else {
                 printf("Erreur : caractère inconnu '%c'.\n", *npi);
                 return 0;
             }
         }
-        npi++; // Passer au caractère suivant
+        npi++;  // Passer au caractère suivant
     }
 
-    if (top == 1)
-        return pile[0]; // Retourner le dernier élément comme résultat
+    if (top == 1) return pile[0];  // Retourner le dernier élément comme résultat
     printf("Erreur : pile incorrecte à la fin.\n");
     return 0;
 }
@@ -378,11 +353,12 @@ void gnuplot_interface(char *nom_fichier)
 
 void ask_maj_vitesse(Coord *point, SimSettings *sim, Params *params)
 {
-    printf("mise a jour de la vitesse selon x, en notation polonaise inversee : ");
+    while (getchar() != '\n'); //vider le tampon d'entree
+    printf("mise a jour de la vitesse selon x, en notation polonaise inversee : \n");
     char *expression_x = ask_notation_pol_inv();
-    printf("mise a jour de la vitesse selon y, en notation polonaise inversee : ");
+    printf("mise a jour de la vitesse selon y, en notation polonaise inversee : \n");
     char *expression_y = ask_notation_pol_inv();
-    printf("mise a jour de la vitesse selon z, en notation polonaise inversee : ");
+    printf("mise a jour de la vitesse selon z, en notation polonaise inversee : \n");
     char *expression_z = ask_notation_pol_inv();
 
     printf("Expression pour x: %s\n", expression_x);
@@ -399,3 +375,5 @@ void ask_maj_vitesse(Coord *point, SimSettings *sim, Params *params)
     point->y += dy * dt;
     point->z += dz * dt;
 }
+
+
