@@ -18,10 +18,13 @@ Après la definition des paramètres, le programme simule le comportement du sys
 ├── doc/
 │   └── Documentation.pdf       # Documentation du projet
 ├── src/
+│   ├── Makefile                # Fichier Makefile pour la compilation
 │   ├── main.c                  # Fichier principal du programme
 │   ├── lorenz.c                # Fonctions pour les systèmes dynamiques
 │   ├── lorenz.h                # Structures et déclaration des fonctions
 │   ├── lorenz.dat              # Fichier généré par la simulation
+│   ├── gnuplot_i.c             # Code pour l'interface avec gnuplot
+│   ├── gnuplot_i.h             # Déclarations pour l'interface avec gnuplot
 ├── README.md                   # Ce fichier
 ```
 
