@@ -67,32 +67,24 @@ Choisir paramètre Rho : 28
 Choisir paramètre Beta : 2.667
 ```
 
-Etape 2 : On choisit le système dynamique 
-```
-Liste du choix du système dynamique :
-1 : Système de Lorenz.
-2 : Oscillateur simple.
-3 : Spirale.
-Votre choix : 1
-```
-
-Etape 3 : On initie les coordonnées du système dynamique
-```
-Coordonnée initiale x : 1.0
-Coordonnée initiale y : 1.0
-Coordonnée initiale z : 1.0
-
-```
-
-Etape 4 : On configure la simulation
+Etape 2 : On configure la simulation
 ```
 Choisir l'incrément de temps (dt) : 0.01
 Choisir le temps maximal (Tmax) : 10
 
 ```
 
+Etape 3 : On choisit le système dynamique 
+```
+Liste du choix du système dynamique :
+1 : Système de Lorenz.
+2 : Oscillateur simple.
+3 : Spirale.
+4 : Systeme personnalyse
+Votre choix : 1
+```
 
-Si on choisit l'option 4, on doit entrer les formules en NPI :
+Si on choisit l'option 4, on doit entrer les formules en NPI (Notation Polonaise inversee) :
 ```
 Mise à jour de la vitesse selon x, en notation polonaise inversée :
 x y +
@@ -102,7 +94,17 @@ Mise à jour de la vitesse selon z, en notation polonaise inversée :
 z x -
 ```
 
-Etape 6 : Visualisation des résultats
+
+Etape 4 : On initie les coordonnées du système dynamique
+```
+Coordonnée initiale x : 1.0
+Coordonnée initiale y : 1.0
+Coordonnée initiale z : 1.0
+
+```
+
+
+Etape 5 : Visualisation des résultats
 
 ```
 Le fichier lorenz.dat a été créé.
