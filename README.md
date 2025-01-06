@@ -31,7 +31,7 @@ Après la definition des paramètres, le programme simule le comportement du sys
 
 ## Prérequis
 
-Avant de compiler, vosu devez vous assurer d'avoir les éléments suivants installés :
+Avant de compiler, vous devez vous assurer d'avoir les éléments suivants installés :
 
 - GCC ou un autre compilateur.
 - Gnuplot
