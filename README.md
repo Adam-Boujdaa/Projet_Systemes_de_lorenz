@@ -1,5 +1,7 @@
 # Projet - Simulation de systèmes dynamiques
 
+![image](https://github.com/user-attachments/assets/1bef98a7-e196-48ff-a46f-16d0ca2df793)
+
 ## Description
 
 Dans ce projet, un simulateur de systèmes dynamiques a été implementée : 
