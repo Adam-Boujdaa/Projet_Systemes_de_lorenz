@@ -1,6 +1,6 @@
 # Projet - Simulation de systèmes dynamiques
 
-<img src="https://github.com/user-attachments/assets/1bef98a7-e196-48ff-a46f-16d0ca2df793" width="300"/>
+<img src="https://github.com/user-attachments/assets/1bef98a7-e196-48ff-a46f-16d0ca2df793" width="450"/>
 
 ## Description
 
